@@ -1,14 +1,17 @@
 import express from 'express';
 import mongoose from 'mongoose';
+import Cors from 'cors';
 
 import Cards from './dbCards.js';
 
 //App Config
 const app = express();
-const port = process.env.PORT || 27017
-const connectionURL = 'mongodb+srv://admin:S4aA2KjIJNPpxipW@cluster0.mxm98.mongodb.net/confluencedb?retryWrites=true&w=majority'
+const port = process.env.PORT || 27017;
+const connectionURL = 'mongodb+srv://admin:S4aA2KjIJNPpxipW@cluster0.mxm98.mongodb.net/confluencedb?retryWrites=true&w=majority';
 
 //Middleware
+app.use(express.json());
+app.use(Cors());
 
 //DB Config
 mongoose.connect(connectionURL, {
