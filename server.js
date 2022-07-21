@@ -1,32 +1,54 @@
-// DEPENDENCIES
-const express = require('express')
-const app = express()
-const { Sequelize } = require('sequelize')
-const bands = require('./controllers/bands_controller')
+import express from 'express';
+import mongoose from 'mongoose';
 
-// CONFIGURATION / MIDDLEWARE
-require('dotenv').config()
-app.use(express.json())
-app.use(express.urlencoded({ extended: false }))
+import Cards from './dbCards.js';
 
-// ROOT
-app.get('/', (req, res) => {
-    res.status(200).json({
-        message: 'Welcome to the Tour API'
+//App Config
+const app = express();
+const port = process.env.PORT || 27017
+const connectionURL = 'mongodb+srv://admin:S4aA2KjIJNPpxipW@cluster0.mxm98.mongodb.net/confluencedb?retryWrites=true&w=majority'
+
+//Middleware
+
+//DB Config
+mongoose.connect(connectionURL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+
+}).then(()=>{
+    console.log("DB Connected Successfully");
+});
+
+
+//API Endpoints
+app.get('/', (req, res) => res.status(200).send("HELLO!!!"));
+
+app.post('/confluence/cards', (req, res) => {
+
+    const dbCard = req.body;
+
+    Cards.create(dbCard, (err, data) => {
+        if (err) {
+            res.status(500).send(err);
+        } else {
+            res.status(201).send(data);
+        }
     })
-})
 
-// CONTROLLERS  
-const bandsController = require('./controllers/bands_controller')
-app.use('/bands', bandsController)
+});
 
-const eventsController = require('./controllers/events_controller')
-app.use('/events', eventsController)
 
-const stagesController = require('./controllers/stages_controller')
-app.use('/stages', stagesController)
+app.get('/confluence/cards', (req, res) => {
 
-// LISTEN
-app.listen(process.env.PORT, () => {
-    console.log(`🎸 Rockin' on port: ${process.env.PORT}`)
-})
+    Cards.find((err, data) => {
+        if (err) {
+            res.status(500).send(err);
+        } else {
+            res.status(200).send(data);
+        }
+    });
+
+});
+
+//Listener
+app.listen(port, () => console.log(`listening on localhost: ${port}`));
