@@ -25,6 +25,8 @@ app.use(express.json())
 //     console.log("DB Connected Successfully");
 // });
 
+
+
 // Default
 app.get('/', (req, res) => {
     res.json('Hello to my app')
