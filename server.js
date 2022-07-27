@@ -16,17 +16,6 @@ const port = process.env.PORT || 8000;
 app.use(cors())
 app.use(express.json())
 
-//DB Config
-// mongoose.connect(uri, {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true,
-
-// }).then(()=>{
-//     console.log("DB Connected Successfully");
-// });
-
-
-
 // Default
 app.get('/', (req, res) => {
     res.json('Hello to my app')
