@@ -253,5 +253,9 @@ app.post('/message', async (req, res) => {
     }
 })
 
+// Wildcard Error
+app.get('*', (req, res) => {
+	res.send('404')
+})
 
 app.listen(port, () => console.log('server running on PORT ' + port))
